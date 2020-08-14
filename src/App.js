@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
+import { newOrder } from './actions'
+import {
+  getHamburgerByIndex
+} from './selectors'
+
 function App() {
   const [index, setIndex] = useState(0)
 
+  console.log('index test:', index)
+
   // Get something out of the store to show it
-  function selector (store) {
-    return store[index]
-  }
+  const selector = getHamburgerByIndex(index)
 
   const hamburger = useSelector(selector)
 
@@ -23,9 +28,7 @@ function App() {
     // 1. Make the action object
     // type - string that matches a reducer case
     // payload? - anything else that describes the behavior
-    const action = {
-      type: 'NEW_ORDER', payload: hamburger.meat
-    }
+    const action = newOrder(hamburger.meat)
 
     // 2. Dispatch the action to the store
     dispatch(action)
