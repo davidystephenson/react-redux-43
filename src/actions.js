@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export function newOrder (meat) {
   const action = {
     type: 'NEW_ORDER',
@@ -32,4 +34,22 @@ export function allBurgers (burgers) {
   }
 
   return action
+}
+
+export async function fetchAllBurgers (
+  dispatch, getState
+) {
+  console.log('inner')
+  try {
+    const response = await axios
+      .get('http://localhost:4000')
+
+    const { data } = response
+
+    const action = allBurgers(data)
+
+    dispatch(action)
+  } catch (error) {
+    console.log(error)
+  }
 }

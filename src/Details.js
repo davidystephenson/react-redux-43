@@ -17,7 +17,7 @@ export default function Details ({
       burger.meat
     )
 
-    // 2. Dispatch the action to the store
+    // 2. mDispatch the action to the store
     dispatch(action)
   }
 
