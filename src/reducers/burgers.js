@@ -15,7 +15,7 @@ const initial = [
   },
   {
     meat: 'chicken',
-    lettuce: false,
+    lettuce: true,
     tomato: false,
     sauces: ['ketchup'],
     orders: 0
@@ -53,6 +53,12 @@ function reducer (state = initial, action) {
 
       // 2. Return that new value
       return newState
+    }
+
+    case 'DELETE_BURGER': {
+      return state.filter(burger =>
+        burger.meat !== action.payload
+      )
     }
 
     default: {

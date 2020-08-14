@@ -1,27 +1,53 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { newOrder } from './actions'
 import {
-  getHamburgerByIndex
+  newOrder, setNumber, deleteBurger
+} from './actions'
+import {
+  getBurgers,
+  getBurger,
+  getNumber,
+  lettuceBurgers
 } from './selectors'
 
 function App() {
-  const [index, setIndex] = useState(0)
-
-  console.log('index test:', index)
-
-  // Get something out of the store to show it
-  const selector = getHamburgerByIndex(index)
-
-  const hamburger = useSelector(selector)
-
   const dispatch = useDispatch()
 
-  console.log('hamburger test:', hamburger)
+  // Get something out of the store to show it
+  const hamburger = useSelector(
+    getBurger
+  )
+  const number = useSelector(getNumber)
+  const burgers = useSelector(getBurgers)
+  const lettuces = useSelector(lettuceBurgers)
+  console.log('lettuces test:', lettuces)
+
+  function destroy (meat) {
+    const action = deleteBurger(meat)
+
+    dispatch(action)
+  }
+
+  const items = lettuces
+    .map(burger => <li>
+      {burger.meat}
+      {' '}
+      <button
+        onClick={
+          () => destroy(burger.meat)
+        }
+      >
+        Delete
+      </button>
+    </li>)
 
   function onChange (event) {
-    setIndex(event.target.value)
+    const action = setNumber(
+      event.target.value
+    )
+    
+    dispatch(action)
   }
 
   function onClick () {
@@ -36,12 +62,14 @@ function App() {
 
   return (
     <>
+      <ol>{items}</ol>
+
       <input
         type='range'
         max='2'
         min='0'
         onChange={onChange}
-        value={index}
+        value={number}
       />
 
       <h1>{hamburger.meat}</h1>
