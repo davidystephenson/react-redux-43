@@ -24,3 +24,12 @@ export function deleteBurger (meat) {
 
   return action
 }
+
+export function allBurgers (burgers) {
+  const action = {
+    type: 'ALL_BURGERS',
+    payload: burgers
+  }
+
+  return action
+}

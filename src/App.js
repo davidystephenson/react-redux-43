@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import React, {
+  useState, useEffect
+} from 'react';
+
+import axios from 'axios'
+import {
+  useSelector, useDispatch
+} from 'react-redux'
 
 import {
-  newOrder, setNumber, deleteBurger
+  allBurgers,
+  newOrder,
+  setNumber,
+  deleteBurger
 } from './actions'
 import {
   getBurgers,
@@ -10,6 +19,8 @@ import {
   getNumber,
   lettuceBurgers
 } from './selectors'
+
+import Details from './Details'
 
 function App() {
   const dispatch = useDispatch()
@@ -22,6 +33,27 @@ function App() {
   const burgers = useSelector(getBurgers)
   const lettuces = useSelector(lettuceBurgers)
   console.log('lettuces test:', lettuces)
+
+  async function fetchBurgers () {
+    try {
+      const response = await axios
+        .get('http://localhost:4000')
+
+      const { data } = response
+
+      const action = allBurgers(data)
+
+      dispatch(action)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function effect () {
+    fetchBurgers()
+  }
+
+  useEffect(effect, [])
 
   function destroy (meat) {
     const action = deleteBurger(meat)
@@ -50,16 +82,6 @@ function App() {
     dispatch(action)
   }
 
-  function onClick () {
-    // 1. Make the action object
-    // type - string that matches a reducer case
-    // payload? - anything else that describes the behavior
-    const action = newOrder(hamburger.meat)
-
-    // 2. Dispatch the action to the store
-    dispatch(action)
-  }
-
   return (
     <>
       <ol>{items}</ol>
@@ -72,17 +94,7 @@ function App() {
         value={number}
       />
 
-      <h1>{hamburger.meat}</h1>
-
-      <p>
-        Does it have lettuce?
-        {' '}
-        {hamburger.lettuce ? 'Yes' : 'No'}
-      </p>
-
-      <h4>{hamburger.orders} happy customers :)</h4>
-
-      <button onClick={onClick}>Order now!</button>
+      <Details burger={hamburger} />
     </>
   )
 }

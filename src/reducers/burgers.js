@@ -1,26 +1,4 @@
-const initial = [
-  {
-    meat: 'angus beef',
-    lettuce: false,
-    tomato: true,
-    sauces: ['ketchup', 'mayonnaise'],
-    orders: 0
-  },
-  {
-    meat: 'wagyu beef',
-    lettuce: true,
-    tomato: true,
-    sauces: ['truffle oil'],
-    orders: 0
-  },
-  {
-    meat: 'chicken',
-    lettuce: true,
-    tomato: false,
-    sauces: ['ketchup'],
-    orders: 0
-  }
-]
+const initial = []
 
 // { type: 'NEW_ORDER', payload: 'chicken' }
 
@@ -59,6 +37,10 @@ function reducer (state = initial, action) {
       return state.filter(burger =>
         burger.meat !== action.payload
       )
+    }
+
+    case 'ALL_BURGERS': {
+      return action.payload
     }
 
     default: {
